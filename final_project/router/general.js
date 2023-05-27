@@ -14,18 +14,23 @@ public_users.get("/", function (req, res) {
   res.send(JSON.stringify(books, null, 4));
 });
 
+// Handle the case when the /isbn/ route is accessed without a specific ISBN value
+public_users.get("/isbn/", function (req, res) {
+  res.status(400).json({ error: "ISBN parameter is missing" });
+});
+
 // Get book details based on ISBN
 public_users.get("/isbn/:isbn", function (req, res) {
   const isbn = req.params.isbn;
+  if (!isbn || isbn.trim() === "") {
+    return res.status(400).json({ error: "ISBN parameter is missing" });
+  }
   const book = Object.values(books).find((b) => b.isbn === isbn);
-  if (!isbn) {
-    res.send("Empty isbn");
+
+  if (book) {
+    res.send(book);
   } else {
-    if (book) {
-      res.send(book);
-    } else {
-      res.send(`The isbn:${isbn} not found`);
-    }
+    res.send(`The isbn:${isbn} not found`);
   }
 });
 
