@@ -77,7 +77,8 @@ public_users.get("/title/:title", function (req, res) {
 //  Get book review
 public_users.get("/review/:isbn", function (req, res) {
   const isbn = req.params.isbn;
-  const book = Object.values(books).find((b) => b.isbn === isbn);
+  //const book = Object.values(books).find((b) => b.isbn === isbn);
+  const book = books[isbn];
 
   if (book) {
     const reviews = book.reviews;
